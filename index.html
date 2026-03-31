@@ -3,20 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Satguru Holiday Portal | Login</title>
+    <title>Welcome to Non-air Desk</title>
     <style>
       :root {
-        color-scheme: light;
-        --bg: #f1f5ff;
-        --surface: #ffffff;
-        --panel: #0f1f4a;
-        --panel-soft: #233b7e;
-        --text: #1f2937;
-        --muted: #6b7280;
-        --border: #d8e0ef;
-        --primary: #0f62fe;
-        --primary-strong: #0a4ad8;
-        --success: #127a5b;
+        --bg: #f4f7ff;
+        --card: #ffffff;
+        --text: #17243c;
+        --muted: #5f6e89;
+        --primary: #1554d1;
+        --primary-soft: #eaf1ff;
+        --border: #d7e1f5;
+        --danger: #bb2f2f;
       }
 
       * {
@@ -25,342 +22,282 @@
 
       body {
         margin: 0;
-        min-height: 100vh;
-        font-family: Inter, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+        font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+        background: linear-gradient(180deg, #eef3ff 0%, var(--bg) 100%);
         color: var(--text);
         background:
           radial-gradient(circle at 12% 8%, #dbe7ff 0, transparent 36%),
           radial-gradient(circle at 88% 90%, #d8e8ff 0, transparent 33%),
           var(--bg);
       }
-
-      .app-shell {
-        width: min(1140px, calc(100% - 32px));
-        margin: 28px auto;
-        min-height: calc(100vh - 56px);
-        border-radius: 22px;
-        overflow: hidden;
-        border: 1px solid #cfdaf2;
-        box-shadow: 0 16px 42px rgba(13, 42, 122, 0.15);
-        background: var(--surface);
-        display: grid;
-        grid-template-columns: 0.95fr 1.35fr;
-      }
-
-      .crm-panel {
-        background: linear-gradient(180deg, var(--panel) 0%, #142a61 60%, #10224f 100%);
-        color: #f5f8ff;
-        padding: 34px 28px;
-        display: flex;
-        flex-direction: column;
-        gap: 26px;
-      }
-
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .brand-mark {
-        width: 42px;
-        height: 42px;
-        border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        display: grid;
-        place-items: center;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        background: rgba(255, 255, 255, 0.08);
-      }
-
-      .brand h1 {
-        margin: 0;
-        font-size: 1rem;
-        letter-spacing: 0.02em;
-      }
-
-      .brand p {
-        margin: 2px 0 0;
-        color: #d2dcff;
-        font-size: 0.82rem;
-      }
-
-      .feature-list {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        display: grid;
-        gap: 12px;
-      }
-
-      .feature-list li {
-        border: 1px solid rgba(181, 202, 255, 0.32);
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.05);
-        padding: 12px;
-      }
-
-      .feature-list strong {
-        display: block;
-        margin-bottom: 4px;
-        font-size: 0.95rem;
-      }
-
-      .feature-list span {
-        font-size: 0.82rem;
-        color: #d5e0ff;
-      }
-
-      .service-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-
-      .service-tags span {
-        padding: 6px 10px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.22);
-        font-size: 0.75rem;
-      }
-
-      .login-zone {
-        padding: 34px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 18px;
-      }
-
-      .status-pill {
-        width: fit-content;
-        border-radius: 999px;
-        border: 1px solid #b3efdd;
-        color: var(--success);
-        background: #e7fff7;
-        font-size: 0.76rem;
-        font-weight: 600;
-        padding: 6px 10px;
-      }
-
-      .login-box {
+      .wrap { max-width: 1080px; margin: 28px auto; padding: 0 16px; }
+      .card {
+        background: var(--card);
         border: 1px solid var(--border);
         border-radius: 16px;
-        padding: 24px;
-        background: linear-gradient(180deg, #fff 0%, #fafdff 100%);
+        box-shadow: 0 10px 28px rgba(34, 73, 152, 0.08);
       }
-
-      .login-box h2 {
-        margin: 0;
-        font-size: 1.55rem;
-      }
-
-      .login-box p {
-        margin: 8px 0 0;
-        color: var(--muted);
-      }
-
-      .field {
-        margin-top: 16px;
-      }
-
-      label {
-        display: block;
-        margin-bottom: 7px;
-        font-size: 0.84rem;
-        font-weight: 600;
-      }
-
-      input,
-      select {
+      .login-card { max-width: 460px; margin: 12vh auto 0; padding: 26px; }
+      h1 { margin: 0 0 6px; font-size: 1.9rem; }
+      h2 { margin: 0; font-size: 1.2rem; }
+      p { color: var(--muted); margin: 0 0 16px; }
+      .field { margin: 14px 0; }
+      label { display: block; margin-bottom: 6px; font-size: 0.9rem; font-weight: 600; }
+      input[type="text"], input[type="password"] {
         width: 100%;
-        border: 1px solid #c7d4ea;
+        border: 1px solid #bfd0ef;
         border-radius: 10px;
         padding: 11px 12px;
         font: inherit;
-        background: #fff;
       }
-
-      .split {
-        display: grid;
-        gap: 12px;
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .options {
-        margin-top: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 0.82rem;
-      }
-
-      .options a {
-        color: var(--primary);
-        text-decoration: none;
-      }
-
-      .options a:hover {
-        text-decoration: underline;
-      }
-
-      .btn-primary {
-        margin-top: 16px;
+      .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 0.86rem; }
+      .row a { color: var(--primary); text-decoration: none; }
+      .row a:hover { text-decoration: underline; }
+      button {
         width: 100%;
-        border: none;
+        margin-top: 14px;
+        border: 0;
         border-radius: 10px;
         padding: 12px;
+        font-weight: 700;
         color: #fff;
-        font-weight: 600;
-        font-size: 0.92rem;
-        background: linear-gradient(180deg, var(--primary) 0%, var(--primary-strong) 100%);
+        background: linear-gradient(180deg, #236aff 0%, var(--primary) 100%);
         cursor: pointer;
       }
-
-      .mini-grid {
-        margin-top: 4px;
-        display: grid;
-        gap: 10px;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .mini-card {
-        border: 1px solid var(--border);
+      .hint {
+        margin-top: 12px;
+        font-size: 0.78rem;
+        color: var(--muted);
+        background: #f8fbff;
+        border: 1px dashed #c7d6f2;
         border-radius: 10px;
         padding: 10px;
       }
+      .error { color: var(--danger); font-size: 0.86rem; min-height: 20px; margin-top: 8px; }
 
-      .mini-card strong {
-        display: block;
-        font-size: 0.86rem;
+      .app { display: none; }
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 16px;
+        margin-bottom: 12px;
       }
-
-      .mini-card span {
-        font-size: 0.75rem;
-        color: var(--muted);
-      }
+      .pill { padding: 6px 10px; border-radius: 999px; font-size: 0.75rem; background: var(--primary-soft); color: var(--primary); }
+      .layout { display: grid; grid-template-columns: 260px 1fr; gap: 12px; }
+      .side { padding: 14px; }
+      .side button { margin: 8px 0 0; text-align: left; }
+      .side button.active { background: linear-gradient(180deg, #1b64f8 0%, #0f4fd0 100%); }
+      .content { padding: 14px; }
+      .panel { display: none; }
+      .panel.active { display: block; }
+      .grid { display: grid; gap: 10px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .mini { border: 1px solid var(--border); border-radius: 10px; padding: 10px; background: #fcfdff; }
+      table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.88rem; }
+      th, td { border: 1px solid var(--border); padding: 8px; text-align: left; vertical-align: top; }
+      th { background: #f5f8ff; }
 
       @media (max-width: 900px) {
-        .app-shell {
-          grid-template-columns: 1fr;
-        }
-
-        .crm-panel,
-        .login-zone {
-          padding: 24px;
-        }
-
-        .split,
-        .mini-grid {
-          grid-template-columns: 1fr;
-        }
+        .layout { grid-template-columns: 1fr; }
+        .login-card { margin-top: 6vh; }
+        .grid { grid-template-columns: 1fr; }
       }
     </style>
   </head>
   <body>
-    <main class="app-shell">
-      <section class="crm-panel" aria-label="Portal structure">
-        <header class="brand">
-          <div class="brand-mark">SG</div>
+    <main class="wrap">
+      <section id="loginScreen" class="card login-card">
+        <h1>Welcome to Non-air Desk</h1>
+        <p>Sign in with your username and password.</p>
+
+        <form id="loginForm">
+          <div class="field">
+            <label for="username">User Name</label>
+            <input id="username" name="username" type="text" placeholder="Enter username" required />
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="Enter password" required />
+          </div>
+
+          <div class="row">
+            <label><input id="rememberMe" type="checkbox" /> Remember me</label>
+            <a href="#" aria-label="Forgot Password">Forgot password?</a>
+          </div>
+
+          <div id="loginError" class="error" role="alert"></div>
+          <button type="submit">Login</button>
+        </form>
+
+        <div class="hint">
+          Demo credentials: <strong>superadmin / Super@123</strong>, <strong>admin / Admin@123</strong>, <strong>user / User@123</strong>
+        </div>
+      </section>
+
+      <section id="appScreen" class="app">
+        <header class="card topbar">
           <div>
-            <h1>Satguru Travel CRM</h1>
-            <p>Holiday Itinerary • Non-Air Services</p>
+            <h2>Non-air Desk Admin Panel</h2>
+            <p id="loginInfo"></p>
+          </div>
+          <div>
+            <span id="roleBadge" class="pill"></span>
+            <button id="logoutBtn" type="button" style="width:auto;padding:8px 12px;margin-left:8px;">Logout</button>
           </div>
         </header>
 
-        <ul class="feature-list">
-          <li>
-            <strong>Query Operations</strong>
-            <span>Self, Inter-Branch Sent & Received with SLA escalation and reassignment audit trail.</span>
-          </li>
-          <li>
-            <strong>Quote & Booking Engine</strong>
-            <span>Separate quote lifecycle and booking conversion with approval controls.</span>
-          </li>
-          <li>
-            <strong>Admin & Dynamic Masters</strong>
-            <span>Routing-critical branches, user mapping, and configurable master framework.</span>
-          </li>
-        </ul>
+        <div class="layout">
+          <aside class="card side">
+            <h2>Admin</h2>
+            <button class="tabBtn active" data-tab="master">Master</button>
+            <button class="tabBtn" data-tab="user-management">User Management</button>
+            <button class="tabBtn" data-tab="activity">Activity Tracking</button>
+            <button class="tabBtn" data-tab="user-circle">User Circle</button>
+          </aside>
 
-        <div class="service-tags" aria-label="Supported services">
-          <span>Hotel</span>
-          <span>Packages</span>
-          <span>Visa</span>
-          <span>Car Rental</span>
-          <span>Cruise</span>
-          <span>Insurance</span>
-          <span>MICE</span>
-          <span>Train</span>
-          <span>Sightseeing</span>
-        </div>
-      </section>
-
-      <section class="login-zone" aria-label="Login panel">
-        <span class="status-pill">Portal Login</span>
-
-        <div class="login-box">
-          <h2>Sign in to continue</h2>
-          <p>Use your branch credentials to access operational, quotation, and booking modules.</p>
-
-          <form>
-            <div class="split">
-              <div class="field">
-                <label for="branch">Branch</label>
-                <select id="branch" name="branch">
-                  <option>Dubai Head Office</option>
-                  <option>Abu Dhabi</option>
-                  <option>Muscat</option>
-                  <option>Doha</option>
-                </select>
+          <section class="card content">
+            <article id="master" class="panel active">
+              <h2>Master (default first tab)</h2>
+              <p>Dynamic master framework with active/inactive visibility controls and duplicate prevention.</p>
+              <div class="grid">
+                <div class="mini"><strong>Master header fields</strong><br/>Master Name, Master Description, Status</div>
+                <div class="mini"><strong>Master item grid</strong><br/>Item/Option, Description, Status, Action, Sort Order</div>
+                <div class="mini"><strong>Controls</strong><br/>Add, Edit, Remove, Search, A–Z / Z–A, Manual Sort</div>
+                <div class="mini"><strong>Validation</strong><br/>No duplicate master names or duplicate item values.</div>
               </div>
-              <div class="field">
-                <label for="service">Primary Service</label>
-                <select id="service" name="service">
-                  <option>Packages</option>
-                  <option>Hotel</option>
-                  <option>Visa</option>
-                  <option>Other</option>
-                </select>
-              </div>
-            </div>
 
-            <div class="field">
-              <label for="user">Email / Username</label>
-              <input id="user" name="user" type="text" placeholder="e.g. ops.dubai@satgurutravel.com" />
-            </div>
+              <h3>Locked Masters – Phase 1</h3>
+              <table>
+                <thead><tr><th>Master</th><th>Locked details</th></tr></thead>
+                <tbody>
+                  <tr><td>Type of Services</td><td>Car Rental, Cruise, Hotel, Insurance, MICE, Packages, Sight Seeing, Train, Visa, Other</td></tr>
+                  <tr><td>Countries</td><td>Country Name, ISO-2, ISO-3, Dialing Code (multi-column master)</td></tr>
+                  <tr><td>Branch Master</td><td>Branch ID, Branch Code, Branch Name, Country, Status, Action</td></tr>
+                </tbody>
+              </table>
 
-            <div class="field">
-              <label for="password">Password</label>
-              <input id="password" name="password" type="password" placeholder="Enter password" />
-            </div>
+              <h3>Service-wise TAT / SLA (hours)</h3>
+              <table>
+                <thead><tr><th>Service</th><th>TAT</th></tr></thead>
+                <tbody>
+                  <tr><td>Car Rental</td><td>4</td></tr><tr><td>Cruise</td><td>48</td></tr><tr><td>Hotel</td><td>4</td></tr>
+                  <tr><td>Insurance</td><td>4</td></tr><tr><td>MICE</td><td>48</td></tr><tr><td>Packages</td><td>24</td></tr>
+                  <tr><td>Sight Seeing</td><td>8</td></tr><tr><td>Train</td><td>4</td></tr><tr><td>Visa</td><td>48</td></tr><tr><td>Other</td><td>8</td></tr>
+                </tbody>
+              </table>
+            </article>
 
-            <div class="options">
-              <label><input type="checkbox" /> Remember me</label>
-              <a href="#">Forgot password?</a>
-            </div>
+            <article id="user-management" class="panel">
+              <h2>User Management</h2>
+              <p>User setup controls routing, fallback assignment, and SLA escalation.</p>
+              <table>
+                <thead><tr><th>Section</th><th>Mandatory fields</th></tr></thead>
+                <tbody>
+                  <tr><td>Identity</td><td>Full Name, Email/Login ID, Password, User Type</td></tr>
+                  <tr><td>Location</td><td>Country, Branch (filtered by country), Extra Branches</td></tr>
+                  <tr><td>Routing</td><td>1st User fallback, Service handled (at least one)</td></tr>
+                  <tr><td>Hierarchy</td><td>Escalation matrix L1-L4 (L1 self; L2-L4 mandatory)</td></tr>
+                  <tr><td>Availability</td><td>Shift timing and time zone</td></tr>
+                  <tr><td>Permissions</td><td>Module-level permissions (Master/Branch Master reserved to Super Admin)</td></tr>
+                </tbody>
+              </table>
+            </article>
 
-            <button type="button" class="btn-primary">Login to Dashboard</button>
-          </form>
-        </div>
+            <article id="activity" class="panel">
+              <h2>Activity Tracking</h2>
+              <p>Audit trail for creation/modification logs, assignment updates, escalation events, and last login review.</p>
+              <ul>
+                <li>Track query create/update/reassignment timestamps.</li>
+                <li>Track role/permission changes and user activation/inactivation.</li>
+                <li>Track escalation transitions (L1 → L2 → L3 → L4).</li>
+              </ul>
+            </article>
 
-        <div class="mini-grid" aria-label="Module shortcuts">
-          <article class="mini-card">
-            <strong>Admin</strong>
-            <span>Master, Users, Activity</span>
-          </article>
-          <article class="mini-card">
-            <strong>Query Desk</strong>
-            <span>Track TAT and escalations</span>
-          </article>
-          <article class="mini-card">
-            <strong>Finance</strong>
-            <span>Invoices and refunds</span>
-          </article>
+            <article id="user-circle" class="panel">
+              <h2>User Circle</h2>
+              <p>Reserved for future phase (feature flagged placeholder).</p>
+            </article>
+          </section>
         </div>
       </section>
     </main>
+
+    <script>
+      const CREDENTIALS = {
+        superadmin: { password: "Super@123", role: "Super Admin" },
+        admin: { password: "Admin@123", role: "Admin" },
+        user: { password: "User@123", role: "Standard User" }
+      };
+
+      const loginForm = document.getElementById("loginForm");
+      const loginError = document.getElementById("loginError");
+      const loginScreen = document.getElementById("loginScreen");
+      const appScreen = document.getElementById("appScreen");
+      const roleBadge = document.getElementById("roleBadge");
+      const loginInfo = document.getElementById("loginInfo");
+      const logoutBtn = document.getElementById("logoutBtn");
+      const tabButtons = document.querySelectorAll(".tabBtn");
+      const panels = document.querySelectorAll(".panel");
+
+      function switchTab(tabId) {
+        tabButtons.forEach((btn) => btn.classList.toggle("active", btn.dataset.tab === tabId));
+        panels.forEach((panel) => panel.classList.toggle("active", panel.id === tabId));
+      }
+
+      tabButtons.forEach((btn) => {
+        btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+      });
+
+      function showApp(username, role) {
+        loginScreen.style.display = "none";
+        appScreen.style.display = "block";
+        roleBadge.textContent = role;
+        loginInfo.textContent = `Logged in as ${username}`;
+
+        if (role !== "Super Admin") {
+          const masterPanel = document.getElementById("master");
+          masterPanel.insertAdjacentHTML(
+            "afterbegin",
+            `<p style="color:#bb2f2f;font-weight:600;">Read-only note: Master and Branch Master are restricted to Super Admin unless elevated.</p>`
+          );
+        }
+      }
+
+      loginForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        loginError.textContent = "";
+
+        const username = document.getElementById("username").value.trim().toLowerCase();
+        const password = document.getElementById("password").value;
+        const rememberMe = document.getElementById("rememberMe").checked;
+
+        const user = CREDENTIALS[username];
+        if (!user || user.password !== password) {
+          loginError.textContent = "Invalid username or password.";
+          return;
+        }
+
+        if (rememberMe) {
+          localStorage.setItem("nonAirRememberedUser", username);
+        } else {
+          localStorage.removeItem("nonAirRememberedUser");
+        }
+
+        showApp(username, user.role);
+      });
+
+      logoutBtn.addEventListener("click", () => {
+        appScreen.style.display = "none";
+        loginScreen.style.display = "block";
+        loginForm.reset();
+      });
+
+      const rememberedUser = localStorage.getItem("nonAirRememberedUser");
+      if (rememberedUser && CREDENTIALS[rememberedUser]) {
+        document.getElementById("username").value = rememberedUser;
+        document.getElementById("rememberMe").checked = true;
+      }
+    </script>
   </body>
 </html>

@@ -96,6 +96,24 @@
       table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.88rem; }
       th, td { border: 1px solid var(--border); padding: 8px; text-align: left; vertical-align: top; }
       th { background: #f5f8ff; }
+      .master-subtabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+      .master-subtab-btn { width: auto; margin-top: 0; padding: 8px 12px; }
+      .master-subtab-btn.active { background: linear-gradient(180deg, #1b64f8 0%, #0f4fd0 100%); }
+      .master-table-card { border: 1px solid var(--border); border-radius: 12px; padding: 12px; background: #fcfdff; }
+      .master-head-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+      .master-head-row button { width: auto; margin: 0; padding: 8px 12px; }
+      .table-wrap { overflow: auto; max-height: 430px; }
+      .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(13, 28, 53, 0.55); padding: 20px; z-index: 60; }
+      .modal-backdrop.open { display: block; }
+      .modal-card { background: #fff; border-radius: 14px; border: 1px solid var(--border); max-width: 1100px; width: 100%; margin: 0 auto; max-height: calc(100vh - 40px); overflow: auto; padding: 16px; }
+      .modal-header { display: flex; justify-content: space-between; align-items: start; gap: 10px; }
+      .modal-header button { width: auto; margin: 0; padding: 8px 12px; }
+      .master-actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+      .master-actions button { width: auto; margin-top: 0; padding: 8px 10px; font-size: 0.82rem; }
+      .table-wrap input, .table-wrap select { width: 100%; border: 1px solid #bfd0ef; border-radius: 6px; padding: 5px 6px; font: inherit; font-size: 0.82rem; }
+      .inline { display: flex; gap: 8px; align-items: end; flex-wrap: wrap; }
+      .inline .field { margin: 0; flex: 1; min-width: 160px; }
+      .muted { color: var(--muted); font-size: 0.82rem; }
 
 
       .master-shell { display: grid; grid-template-columns: 300px 1fr; gap: 12px; margin-top: 10px; }
@@ -118,7 +136,7 @@
         .layout { grid-template-columns: 1fr; }
         .login-card { margin-top: 6vh; }
         .grid { grid-template-columns: 1fr; }
-        .master-shell { grid-template-columns: 1fr; }
+        .master-subtabs { flex-direction: column; }
       }
     </style>
   </head>
@@ -177,47 +195,25 @@
           <section class="card content">
             <article id="master" class="panel active">
               <h2>Master (default first tab)</h2>
-              <p>Dynamic master framework. Create new masters and maintain locked phase-1 masters in editable table form.</p>
+              <p>Use the master sub-tabs to open pre-defined masters. Main area keeps table-only view.</p>
 
-              <div class="master-shell">
-                <section class="master-list">
-                  <h4>Master Directory</h4>
-                  <div id="masterNav" class="stack"></div>
-                  <hr style="border:none;border-top:1px solid var(--border);margin:12px 0;"/>
-                  <h4>Create New Master</h4>
-                  <div class="stack">
-                    <div class="field">
-                      <label for="newMasterName">Master Name</label>
-                      <input id="newMasterName" type="text" placeholder="e.g. Supplier Type" />
-                    </div>
-                    <div class="field">
-                      <label for="newMasterDescription">Description</label>
-                      <input id="newMasterDescription" type="text" placeholder="What this master is used for" />
-                    </div>
-                    <div class="inline">
-                      <div class="field">
-                        <label for="newMasterStatus">Status</label>
-                        <select id="newMasterStatus">
-                          <option>Active</option>
-                          <option>Inactive</option>
-                        </select>
-                      </div>
-                      <div class="field" style="flex:2;">
-                        <label for="newMasterColumns">Columns (comma separated)</label>
-                        <input id="newMasterColumns" type="text" placeholder="Item, Description, Status" />
-                      </div>
-                    </div>
-                    <button id="createMasterBtn" type="button">Create Master</button>
-                    <div id="masterCreateMsg" class="muted"></div>
+              <div id="masterSubTabs" class="master-subtabs"></div>
+
+              <section class="master-table-card">
+                <div class="master-head-row">
+                  <div>
+                    <h3 id="masterTableTitle" style="margin:0;"></h3>
+                    <p id="masterTableDescription" class="muted" style="margin:4px 0 0;"></p>
                   </div>
-                </section>
-
-                <section class="master-editor">
-                  <h4 id="editorTitle">Select a Master</h4>
-                  <p id="editorDescription" class="muted">Choose a master to view and maintain records.</p>
-                  <div id="masterEditor" class="empty-state">Select Service Master, Country Master, Branch Master, or create a new master.</div>
-                </section>
-              </div>
+                  <button id="editMasterBtn" type="button">Edit Master</button>
+                </div>
+                <div class="table-wrap">
+                  <table>
+                    <thead id="masterTableHead"></thead>
+                    <tbody id="masterTableBody"></tbody>
+                  </table>
+                </div>
+              </section>
             </article>
 
             <article id="user-management" class="panel">
@@ -253,6 +249,51 @@
           </section>
         </div>
       </section>
+
+      <div id="masterModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalMasterTitle">
+        <section class="modal-card">
+          <div class="modal-header">
+            <div>
+              <h3 id="modalMasterTitle" style="margin:0;"></h3>
+              <p id="modalMasterDescription" class="muted" style="margin:4px 0 0;"></p>
+            </div>
+            <button id="closeMasterModalBtn" type="button">Close</button>
+          </div>
+
+          <div class="inline" style="margin-top:10px;">
+            <div class="field">
+              <label for="modalMasterName">Master Name</label>
+              <input id="modalMasterName" type="text" />
+            </div>
+            <div class="field" style="flex:2;">
+              <label for="modalMasterDescriptionInput">Master Description</label>
+              <input id="modalMasterDescriptionInput" type="text" />
+            </div>
+            <div class="field">
+              <label for="modalMasterStatus">Status</label>
+              <select id="modalMasterStatus">
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="master-actions">
+            <button type="button" id="modalAddRowBtn">Add Row</button>
+            <button type="button" id="modalSortAscBtn">Sort A-Z</button>
+            <button type="button" id="modalSortDescBtn">Sort Z-A</button>
+            <input id="modalSearch" type="text" placeholder="Search rows" style="max-width:220px;" />
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead id="modalTableHead"></thead>
+              <tbody id="modalTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
     </main>
 
     <script>
@@ -320,6 +361,13 @@
         selectedId: "service-master"
       };
 
+      const masterSubTabs = document.getElementById("masterSubTabs");
+      const masterTableTitle = document.getElementById("masterTableTitle");
+      const masterTableDescription = document.getElementById("masterTableDescription");
+      const masterTableHead = document.getElementById("masterTableHead");
+      const masterTableBody = document.getElementById("masterTableBody");
+      const masterModal = document.getElementById("masterModal");
+
       function switchTab(tabId) {
         tabButtons.forEach((btn) => btn.classList.toggle("active", btn.dataset.tab === tabId));
         panels.forEach((panel) => panel.classList.toggle("active", panel.id === tabId));
@@ -333,161 +381,152 @@
         return masterState.masters.find((master) => master.id === id);
       }
 
-      function renderMasterNav() {
-        const nav = document.getElementById("masterNav");
-        nav.innerHTML = "";
+      function renderMasterSubTabs() {
+        masterSubTabs.innerHTML = "";
         masterState.masters.forEach((master) => {
           const btn = document.createElement("button");
           btn.type = "button";
-          btn.className = "master-nav-btn" + (masterState.selectedId === master.id ? " active" : "");
-          btn.innerHTML = `${master.name}${master.locked ? '<span class="chip">Pre-defined</span>' : ''}<small>${master.status}</small>`;
+          btn.className = "master-subtab-btn" + (master.id === masterState.selectedId ? " active" : "");
+          btn.textContent = master.name;
           btn.addEventListener("click", () => {
             masterState.selectedId = master.id;
-            renderMasterNav();
-            renderMasterEditor();
+            renderMasterSubTabs();
+            renderMasterTable();
           });
-          nav.appendChild(btn);
+          masterSubTabs.appendChild(btn);
         });
       }
 
-      function renderMasterEditor() {
+      function renderMasterTable() {
         const master = findMasterById(masterState.selectedId);
-        const title = document.getElementById("editorTitle");
-        const description = document.getElementById("editorDescription");
-        const host = document.getElementById("masterEditor");
         if (!master) {
-          host.className = "empty-state";
-          host.textContent = "Select a master to continue.";
           return;
         }
 
-        title.textContent = master.name;
-        description.textContent = `${master.description} (${master.status})`;
-        const searchId = `search-${master.id}`;
-        host.className = "";
-        host.innerHTML = `
-          <div class="master-actions">
-            <button type="button" id="addRowBtn">Add Row</button>
-            <button type="button" id="sortAscBtn">Sort A-Z</button>
-            <button type="button" id="sortDescBtn">Sort Z-A</button>
-            <input id="${searchId}" type="text" placeholder="Search rows" style="max-width:220px;" />
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>${master.columns.map((col) => `<th>${col}</th>`).join("")}<th>Action</th></tr>
-              </thead>
-              <tbody id="masterRowsBody"></tbody>
-            </table>
-          </div>
-        `;
-
-        const tbody = document.getElementById("masterRowsBody");
-
-        function paintRows(filterText = "") {
-          tbody.innerHTML = "";
-          master.rows
-            .filter((row) => row.join(" ").toLowerCase().includes(filterText.toLowerCase()))
-            .forEach((row) => {
-              const tr = document.createElement("tr");
-              row.forEach((val, colIndex) => {
-                const td = document.createElement("td");
-                const isStatusCol = master.columns[colIndex]?.toLowerCase() === "status";
-                if (isStatusCol) {
-                  const sel = document.createElement("select");
-                  ["Active", "Inactive"].forEach((option) => {
-                    const op = document.createElement("option");
-                    op.value = option;
-                    op.textContent = option;
-                    op.selected = val === option;
-                    sel.appendChild(op);
-                  });
-                  sel.addEventListener("change", () => {
-                    row[colIndex] = sel.value;
-                  });
-                  td.appendChild(sel);
-                } else {
-                  const input = document.createElement("input");
-                  input.value = val;
-                  input.addEventListener("input", () => {
-                    row[colIndex] = input.value;
-                  });
-                  td.appendChild(input);
-                }
-                tr.appendChild(td);
-              });
-
-              const action = document.createElement("td");
-              action.innerHTML = '<button type="button" style="width:auto;padding:6px 8px;margin:0;">Delete</button>';
-              action.querySelector("button").addEventListener("click", () => {
-                master.rows = master.rows.filter((item) => item !== row);
-                paintRows(document.getElementById(searchId).value);
-              });
-              tr.appendChild(action);
-              tbody.appendChild(tr);
-            });
-        }
-
-        paintRows();
-
-        document.getElementById("addRowBtn").addEventListener("click", () => {
-          master.rows.push(master.columns.map((column) => (column.toLowerCase() === "status" ? "Active" : "")));
-          paintRows(document.getElementById(searchId).value);
-        });
-
-        document.getElementById("sortAscBtn").addEventListener("click", () => {
-          master.rows.sort((a, b) => String(a[0]).localeCompare(String(b[0])));
-          paintRows(document.getElementById(searchId).value);
-        });
-
-        document.getElementById("sortDescBtn").addEventListener("click", () => {
-          master.rows.sort((a, b) => String(b[0]).localeCompare(String(a[0])));
-          paintRows(document.getElementById(searchId).value);
-        });
-
-        document.getElementById(searchId).addEventListener("input", (event) => {
-          paintRows(event.target.value);
-        });
+        masterTableTitle.textContent = master.name;
+        masterTableDescription.textContent = `${master.description} (${master.status})`;
+        masterTableHead.innerHTML = `<tr>${master.columns.map((col) => `<th>${col}</th>`).join("")}</tr>`;
+        masterTableBody.innerHTML = master.rows
+          .map((row) => `<tr>${row.map((val) => `<td>${val}</td>`).join("")}</tr>`)
+          .join("");
       }
 
-      document.getElementById("createMasterBtn").addEventListener("click", () => {
-        const name = document.getElementById("newMasterName").value.trim();
-        const description = document.getElementById("newMasterDescription").value.trim();
-        const status = document.getElementById("newMasterStatus").value;
-        const columnsRaw = document.getElementById("newMasterColumns").value.trim();
-        const msg = document.getElementById("masterCreateMsg");
+      function renderModalRows(filterText = "") {
+        const master = findMasterById(masterState.selectedId);
+        const body = document.getElementById("modalTableBody");
+        body.innerHTML = "";
 
-        if (!name || !columnsRaw) {
-          msg.textContent = "Master Name and columns are mandatory.";
-          return;
+        master.rows
+          .filter((row) => row.join(" ").toLowerCase().includes(filterText.toLowerCase()))
+          .forEach((row) => {
+            const tr = document.createElement("tr");
+            row.forEach((val, colIndex) => {
+              const td = document.createElement("td");
+              const isStatusCol = master.columns[colIndex]?.toLowerCase() === "status";
+              if (isStatusCol) {
+                const select = document.createElement("select");
+                ["Active", "Inactive"].forEach((option) => {
+                  const op = document.createElement("option");
+                  op.textContent = option;
+                  op.selected = val === option;
+                  select.appendChild(op);
+                });
+                select.addEventListener("change", () => {
+                  row[colIndex] = select.value;
+                  renderMasterTable();
+                });
+                td.appendChild(select);
+              } else {
+                const input = document.createElement("input");
+                input.value = val;
+                input.addEventListener("input", () => {
+                  row[colIndex] = input.value;
+                  renderMasterTable();
+                });
+                td.appendChild(input);
+              }
+              tr.appendChild(td);
+            });
+
+            const action = document.createElement("td");
+            action.innerHTML = '<button type="button" style="width:auto;padding:6px 8px;margin:0;">Delete</button>';
+            action.querySelector("button").addEventListener("click", () => {
+              master.rows = master.rows.filter((item) => item !== row);
+              renderModalRows(document.getElementById("modalSearch").value);
+              renderMasterTable();
+            });
+            tr.appendChild(action);
+            body.appendChild(tr);
+          });
+      }
+
+      function openMasterModal() {
+        const master = findMasterById(masterState.selectedId);
+        document.getElementById("modalMasterTitle").textContent = `${master.name} Management`;
+        document.getElementById("modalMasterDescription").textContent = "Edit full master settings and items.";
+        document.getElementById("modalMasterName").value = master.name;
+        document.getElementById("modalMasterDescriptionInput").value = master.description;
+        document.getElementById("modalMasterStatus").value = master.status;
+        document.getElementById("modalTableHead").innerHTML = `<tr>${master.columns.map((col) => `<th>${col}</th>`).join("")}<th>Action</th></tr>`;
+        document.getElementById("modalSearch").value = "";
+        renderModalRows();
+        masterModal.classList.add("open");
+      }
+
+      function closeMasterModal() {
+        masterModal.classList.remove("open");
+      }
+
+      document.getElementById("editMasterBtn").addEventListener("click", openMasterModal);
+      document.getElementById("closeMasterModalBtn").addEventListener("click", closeMasterModal);
+      masterModal.addEventListener("click", (event) => {
+        if (event.target === masterModal) {
+          closeMasterModal();
         }
+      });
 
-        if (masterState.masters.some((master) => master.name.toLowerCase() === name.toLowerCase())) {
-          msg.textContent = "Duplicate master name is not allowed.";
-          return;
-        }
+      document.getElementById("modalMasterName").addEventListener("input", (event) => {
+        const master = findMasterById(masterState.selectedId);
+        master.name = event.target.value;
+        renderMasterSubTabs();
+        renderMasterTable();
+      });
 
-        const columns = columnsRaw.split(",").map((item) => item.trim()).filter(Boolean);
-        const newMaster = {
-          id: `master-${Date.now()}`,
-          name,
-          description: description || "Custom master created by Super Admin.",
-          status,
-          locked: false,
-          columns,
-          rows: []
-        };
+      document.getElementById("modalMasterDescriptionInput").addEventListener("input", (event) => {
+        const master = findMasterById(masterState.selectedId);
+        master.description = event.target.value;
+        renderMasterTable();
+      });
 
-        masterState.masters.push(newMaster);
-        masterState.selectedId = newMaster.id;
-        msg.textContent = `Master '${name}' created successfully.`;
+      document.getElementById("modalMasterStatus").addEventListener("change", (event) => {
+        const master = findMasterById(masterState.selectedId);
+        master.status = event.target.value;
+        renderMasterTable();
+      });
 
-        document.getElementById("newMasterName").value = "";
-        document.getElementById("newMasterDescription").value = "";
-        document.getElementById("newMasterColumns").value = "";
+      document.getElementById("modalAddRowBtn").addEventListener("click", () => {
+        const master = findMasterById(masterState.selectedId);
+        master.rows.push(master.columns.map((col) => (col.toLowerCase() === "status" ? "Active" : "")));
+        renderModalRows(document.getElementById("modalSearch").value);
+        renderMasterTable();
+      });
 
-        renderMasterNav();
-        renderMasterEditor();
+      document.getElementById("modalSortAscBtn").addEventListener("click", () => {
+        const master = findMasterById(masterState.selectedId);
+        master.rows.sort((a, b) => String(a[0]).localeCompare(String(b[0])));
+        renderModalRows(document.getElementById("modalSearch").value);
+        renderMasterTable();
+      });
+
+      document.getElementById("modalSortDescBtn").addEventListener("click", () => {
+        const master = findMasterById(masterState.selectedId);
+        master.rows.sort((a, b) => String(b[0]).localeCompare(String(a[0])));
+        renderModalRows(document.getElementById("modalSearch").value);
+        renderMasterTable();
+      });
+
+      document.getElementById("modalSearch").addEventListener("input", (event) => {
+        renderModalRows(event.target.value);
       });
 
       function showApp(username, role) {
@@ -540,8 +579,8 @@
         document.getElementById("rememberMe").checked = true;
       }
 
-      renderMasterNav();
-      renderMasterEditor();
+      renderMasterSubTabs();
+      renderMasterTable();
     </script>
   </body>
 </html>

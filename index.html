@@ -115,6 +115,23 @@
       .inline .field { margin: 0; flex: 1; min-width: 160px; }
       .muted { color: var(--muted); font-size: 0.82rem; }
 
+
+      .master-shell { display: grid; grid-template-columns: 300px 1fr; gap: 12px; margin-top: 10px; }
+      .master-list, .master-editor { border: 1px solid var(--border); border-radius: 12px; padding: 12px; background: #fcfdff; }
+      .master-list h4, .master-editor h4 { margin: 0 0 10px; }
+      .master-actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+      .master-actions button { width: auto; margin-top: 0; padding: 8px 10px; font-size: 0.82rem; }
+      .master-nav-btn { width: 100%; margin-top: 8px; padding: 10px; text-align: left; }
+      .master-nav-btn small { display: block; opacity: 0.8; font-weight: 400; margin-top: 2px; }
+      .stack { display: grid; gap: 8px; }
+      .inline { display: flex; gap: 8px; align-items: end; flex-wrap: wrap; }
+      .inline .field { margin: 0; flex: 1; min-width: 150px; }
+      .chip { display: inline-block; background: var(--primary-soft); color: var(--primary); padding: 2px 8px; border-radius: 999px; font-size: 0.72rem; margin-left: 6px; }
+      .muted { color: var(--muted); font-size: 0.82rem; }
+      .table-wrap { overflow: auto; max-height: 430px; }
+      .table-wrap input, .table-wrap select { width: 100%; border: 1px solid #bfd0ef; border-radius: 6px; padding: 5px 6px; font: inherit; font-size: 0.82rem; }
+      .empty-state { border: 1px dashed #bfd0ef; border-radius: 10px; padding: 14px; color: var(--muted); text-align: center; }
+
       @media (max-width: 900px) {
         .layout { grid-template-columns: 1fr; }
         .login-card { margin-top: 6vh; }

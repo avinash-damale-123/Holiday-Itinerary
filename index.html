@@ -97,10 +97,28 @@
       th, td { border: 1px solid var(--border); padding: 8px; text-align: left; vertical-align: top; }
       th { background: #f5f8ff; }
 
+
+      .master-shell { display: grid; grid-template-columns: 300px 1fr; gap: 12px; margin-top: 10px; }
+      .master-list, .master-editor { border: 1px solid var(--border); border-radius: 12px; padding: 12px; background: #fcfdff; }
+      .master-list h4, .master-editor h4 { margin: 0 0 10px; }
+      .master-actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+      .master-actions button { width: auto; margin-top: 0; padding: 8px 10px; font-size: 0.82rem; }
+      .master-nav-btn { width: 100%; margin-top: 8px; padding: 10px; text-align: left; }
+      .master-nav-btn small { display: block; opacity: 0.8; font-weight: 400; margin-top: 2px; }
+      .stack { display: grid; gap: 8px; }
+      .inline { display: flex; gap: 8px; align-items: end; flex-wrap: wrap; }
+      .inline .field { margin: 0; flex: 1; min-width: 150px; }
+      .chip { display: inline-block; background: var(--primary-soft); color: var(--primary); padding: 2px 8px; border-radius: 999px; font-size: 0.72rem; margin-left: 6px; }
+      .muted { color: var(--muted); font-size: 0.82rem; }
+      .table-wrap { overflow: auto; max-height: 430px; }
+      .table-wrap input, .table-wrap select { width: 100%; border: 1px solid #bfd0ef; border-radius: 6px; padding: 5px 6px; font: inherit; font-size: 0.82rem; }
+      .empty-state { border: 1px dashed #bfd0ef; border-radius: 10px; padding: 14px; color: var(--muted); text-align: center; }
+
       @media (max-width: 900px) {
         .layout { grid-template-columns: 1fr; }
         .login-card { margin-top: 6vh; }
         .grid { grid-template-columns: 1fr; }
+        .master-shell { grid-template-columns: 1fr; }
       }
     </style>
   </head>
@@ -159,33 +177,47 @@
           <section class="card content">
             <article id="master" class="panel active">
               <h2>Master (default first tab)</h2>
-              <p>Dynamic master framework with active/inactive visibility controls and duplicate prevention.</p>
-              <div class="grid">
-                <div class="mini"><strong>Master header fields</strong><br/>Master Name, Master Description, Status</div>
-                <div class="mini"><strong>Master item grid</strong><br/>Item/Option, Description, Status, Action, Sort Order</div>
-                <div class="mini"><strong>Controls</strong><br/>Add, Edit, Remove, Search, A–Z / Z–A, Manual Sort</div>
-                <div class="mini"><strong>Validation</strong><br/>No duplicate master names or duplicate item values.</div>
+              <p>Dynamic master framework. Create new masters and maintain locked phase-1 masters in editable table form.</p>
+
+              <div class="master-shell">
+                <section class="master-list">
+                  <h4>Master Directory</h4>
+                  <div id="masterNav" class="stack"></div>
+                  <hr style="border:none;border-top:1px solid var(--border);margin:12px 0;"/>
+                  <h4>Create New Master</h4>
+                  <div class="stack">
+                    <div class="field">
+                      <label for="newMasterName">Master Name</label>
+                      <input id="newMasterName" type="text" placeholder="e.g. Supplier Type" />
+                    </div>
+                    <div class="field">
+                      <label for="newMasterDescription">Description</label>
+                      <input id="newMasterDescription" type="text" placeholder="What this master is used for" />
+                    </div>
+                    <div class="inline">
+                      <div class="field">
+                        <label for="newMasterStatus">Status</label>
+                        <select id="newMasterStatus">
+                          <option>Active</option>
+                          <option>Inactive</option>
+                        </select>
+                      </div>
+                      <div class="field" style="flex:2;">
+                        <label for="newMasterColumns">Columns (comma separated)</label>
+                        <input id="newMasterColumns" type="text" placeholder="Item, Description, Status" />
+                      </div>
+                    </div>
+                    <button id="createMasterBtn" type="button">Create Master</button>
+                    <div id="masterCreateMsg" class="muted"></div>
+                  </div>
+                </section>
+
+                <section class="master-editor">
+                  <h4 id="editorTitle">Select a Master</h4>
+                  <p id="editorDescription" class="muted">Choose a master to view and maintain records.</p>
+                  <div id="masterEditor" class="empty-state">Select Service Master, Country Master, Branch Master, or create a new master.</div>
+                </section>
               </div>
-
-              <h3>Locked Masters – Phase 1</h3>
-              <table>
-                <thead><tr><th>Master</th><th>Locked details</th></tr></thead>
-                <tbody>
-                  <tr><td>Type of Services</td><td>Car Rental, Cruise, Hotel, Insurance, MICE, Packages, Sight Seeing, Train, Visa, Other</td></tr>
-                  <tr><td>Countries</td><td>Country Name, ISO-2, ISO-3, Dialing Code (multi-column master)</td></tr>
-                  <tr><td>Branch Master</td><td>Branch ID, Branch Code, Branch Name, Country, Status, Action</td></tr>
-                </tbody>
-              </table>
-
-              <h3>Service-wise TAT / SLA (hours)</h3>
-              <table>
-                <thead><tr><th>Service</th><th>TAT</th></tr></thead>
-                <tbody>
-                  <tr><td>Car Rental</td><td>4</td></tr><tr><td>Cruise</td><td>48</td></tr><tr><td>Hotel</td><td>4</td></tr>
-                  <tr><td>Insurance</td><td>4</td></tr><tr><td>MICE</td><td>48</td></tr><tr><td>Packages</td><td>24</td></tr>
-                  <tr><td>Sight Seeing</td><td>8</td></tr><tr><td>Train</td><td>4</td></tr><tr><td>Visa</td><td>48</td></tr><tr><td>Other</td><td>8</td></tr>
-                </tbody>
-              </table>
             </article>
 
             <article id="user-management" class="panel">
@@ -240,6 +272,54 @@
       const tabButtons = document.querySelectorAll(".tabBtn");
       const panels = document.querySelectorAll(".panel");
 
+      const masterState = {
+        masters: [
+          {
+            id: "service-master",
+            name: "Service Master",
+            description: "Type of services used across dropdowns and routing.",
+            status: "Active",
+            locked: true,
+            columns: ["Master Item / Option", "Description", "Status"],
+            rows: [
+              ["Car Rental", "--", "Active"], ["Cruise", "--", "Active"], ["Hotel", "--", "Active"],
+              ["Insurance", "--", "Active"], ["MICE", "--", "Active"], ["Packages", "--", "Active"],
+              ["Sight Seeing", "--", "Active"], ["Train", "--", "Active"], ["Visa", "--", "Active"], ["Other", "--", "Active"]
+            ]
+          },
+          {
+            id: "country-master",
+            name: "Country Master",
+            description: "Standardized countries with ISO and dialing code.",
+            status: "Active",
+            locked: true,
+            columns: ["Country Name", "ISO-2", "ISO-3", "Dialing Code", "Status"],
+            rows: [
+              ["Afghanistan", "AF", "AFG", "93", "Active"], ["Albania", "AL", "ALB", "355", "Active"],
+              ["Algeria", "DZ", "DZA", "213", "Active"], ["Andorra", "AD", "AND", "376", "Active"],
+              ["Angola", "AO", "AGO", "244", "Active"], ["Argentina", "AR", "ARG", "54", "Active"],
+              ["Australia", "AU", "AUS", "61", "Active"], ["Austria", "AT", "AUT", "43", "Active"],
+              ["Belgium", "BE", "BEL", "32", "Active"], ["Belize", "BZ", "BLZ", "501", "Active"]
+            ]
+          },
+          {
+            id: "branch-master",
+            name: "Branch Master",
+            description: "Routing-critical branch definitions.",
+            status: "Active",
+            locked: true,
+            columns: ["Branch ID", "Country", "Branch Code", "Branch Name", "Status"],
+            rows: [
+              ["B0001", "Nigeria", "ABV", "STTS - Abuja", "Active"], ["B0002", "Ethiopia", "ADD", "STTS - Addis Ababa", "Active"],
+              ["B0008", "Belgium", "BRU", "STTS - Brussels", "Active"], ["B0010", "Egypt", "CAI", "STTS - Cairo", "Active"],
+              ["B0012", "South Africa", "CPT", "STTS - Cape Town", "Active"], ["B0018", "Uganda", "EBB", "STTS - Entebbe", "Active"],
+              ["B0019", "India", "EUC", "STTS - Europcar India", "Active"], ["B0020", "Cameroon", "GOU", "STTS - Garoua", "Active"]
+            ]
+          }
+        ],
+        selectedId: "service-master"
+      };
+
       function switchTab(tabId) {
         tabButtons.forEach((btn) => btn.classList.toggle("active", btn.dataset.tab === tabId));
         panels.forEach((panel) => panel.classList.toggle("active", panel.id === tabId));
@@ -247,6 +327,167 @@
 
       tabButtons.forEach((btn) => {
         btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+      });
+
+      function findMasterById(id) {
+        return masterState.masters.find((master) => master.id === id);
+      }
+
+      function renderMasterNav() {
+        const nav = document.getElementById("masterNav");
+        nav.innerHTML = "";
+        masterState.masters.forEach((master) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "master-nav-btn" + (masterState.selectedId === master.id ? " active" : "");
+          btn.innerHTML = `${master.name}${master.locked ? '<span class="chip">Pre-defined</span>' : ''}<small>${master.status}</small>`;
+          btn.addEventListener("click", () => {
+            masterState.selectedId = master.id;
+            renderMasterNav();
+            renderMasterEditor();
+          });
+          nav.appendChild(btn);
+        });
+      }
+
+      function renderMasterEditor() {
+        const master = findMasterById(masterState.selectedId);
+        const title = document.getElementById("editorTitle");
+        const description = document.getElementById("editorDescription");
+        const host = document.getElementById("masterEditor");
+        if (!master) {
+          host.className = "empty-state";
+          host.textContent = "Select a master to continue.";
+          return;
+        }
+
+        title.textContent = master.name;
+        description.textContent = `${master.description} (${master.status})`;
+        const searchId = `search-${master.id}`;
+        host.className = "";
+        host.innerHTML = `
+          <div class="master-actions">
+            <button type="button" id="addRowBtn">Add Row</button>
+            <button type="button" id="sortAscBtn">Sort A-Z</button>
+            <button type="button" id="sortDescBtn">Sort Z-A</button>
+            <input id="${searchId}" type="text" placeholder="Search rows" style="max-width:220px;" />
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>${master.columns.map((col) => `<th>${col}</th>`).join("")}<th>Action</th></tr>
+              </thead>
+              <tbody id="masterRowsBody"></tbody>
+            </table>
+          </div>
+        `;
+
+        const tbody = document.getElementById("masterRowsBody");
+
+        function paintRows(filterText = "") {
+          tbody.innerHTML = "";
+          master.rows
+            .filter((row) => row.join(" ").toLowerCase().includes(filterText.toLowerCase()))
+            .forEach((row) => {
+              const tr = document.createElement("tr");
+              row.forEach((val, colIndex) => {
+                const td = document.createElement("td");
+                const isStatusCol = master.columns[colIndex]?.toLowerCase() === "status";
+                if (isStatusCol) {
+                  const sel = document.createElement("select");
+                  ["Active", "Inactive"].forEach((option) => {
+                    const op = document.createElement("option");
+                    op.value = option;
+                    op.textContent = option;
+                    op.selected = val === option;
+                    sel.appendChild(op);
+                  });
+                  sel.addEventListener("change", () => {
+                    row[colIndex] = sel.value;
+                  });
+                  td.appendChild(sel);
+                } else {
+                  const input = document.createElement("input");
+                  input.value = val;
+                  input.addEventListener("input", () => {
+                    row[colIndex] = input.value;
+                  });
+                  td.appendChild(input);
+                }
+                tr.appendChild(td);
+              });
+
+              const action = document.createElement("td");
+              action.innerHTML = '<button type="button" style="width:auto;padding:6px 8px;margin:0;">Delete</button>';
+              action.querySelector("button").addEventListener("click", () => {
+                master.rows = master.rows.filter((item) => item !== row);
+                paintRows(document.getElementById(searchId).value);
+              });
+              tr.appendChild(action);
+              tbody.appendChild(tr);
+            });
+        }
+
+        paintRows();
+
+        document.getElementById("addRowBtn").addEventListener("click", () => {
+          master.rows.push(master.columns.map((column) => (column.toLowerCase() === "status" ? "Active" : "")));
+          paintRows(document.getElementById(searchId).value);
+        });
+
+        document.getElementById("sortAscBtn").addEventListener("click", () => {
+          master.rows.sort((a, b) => String(a[0]).localeCompare(String(b[0])));
+          paintRows(document.getElementById(searchId).value);
+        });
+
+        document.getElementById("sortDescBtn").addEventListener("click", () => {
+          master.rows.sort((a, b) => String(b[0]).localeCompare(String(a[0])));
+          paintRows(document.getElementById(searchId).value);
+        });
+
+        document.getElementById(searchId).addEventListener("input", (event) => {
+          paintRows(event.target.value);
+        });
+      }
+
+      document.getElementById("createMasterBtn").addEventListener("click", () => {
+        const name = document.getElementById("newMasterName").value.trim();
+        const description = document.getElementById("newMasterDescription").value.trim();
+        const status = document.getElementById("newMasterStatus").value;
+        const columnsRaw = document.getElementById("newMasterColumns").value.trim();
+        const msg = document.getElementById("masterCreateMsg");
+
+        if (!name || !columnsRaw) {
+          msg.textContent = "Master Name and columns are mandatory.";
+          return;
+        }
+
+        if (masterState.masters.some((master) => master.name.toLowerCase() === name.toLowerCase())) {
+          msg.textContent = "Duplicate master name is not allowed.";
+          return;
+        }
+
+        const columns = columnsRaw.split(",").map((item) => item.trim()).filter(Boolean);
+        const newMaster = {
+          id: `master-${Date.now()}`,
+          name,
+          description: description || "Custom master created by Super Admin.",
+          status,
+          locked: false,
+          columns,
+          rows: []
+        };
+
+        masterState.masters.push(newMaster);
+        masterState.selectedId = newMaster.id;
+        msg.textContent = `Master '${name}' created successfully.`;
+
+        document.getElementById("newMasterName").value = "";
+        document.getElementById("newMasterDescription").value = "";
+        document.getElementById("newMasterColumns").value = "";
+
+        renderMasterNav();
+        renderMasterEditor();
       });
 
       function showApp(username, role) {
@@ -298,6 +539,9 @@
         document.getElementById("username").value = rememberedUser;
         document.getElementById("rememberMe").checked = true;
       }
+
+      renderMasterNav();
+      renderMasterEditor();
     </script>
   </body>
 </html>

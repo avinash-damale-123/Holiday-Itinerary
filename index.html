@@ -3,80 +3,363 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Holiday Itinerary | Non-Air Travel Portal</title>
+    <title>Satguru Holiday Portal | Login</title>
     <style>
       :root {
         color-scheme: light;
-        --bg: #f5f7fb;
-        --card: #ffffff;
+        --bg: #f1f5ff;
+        --surface: #ffffff;
+        --panel: #0f1f4a;
+        --panel-soft: #233b7e;
         --text: #1f2937;
         --muted: #6b7280;
+        --border: #d8e0ef;
         --primary: #0f62fe;
-        --border: #dbe3ef;
+        --primary-strong: #0a4ad8;
+        --success: #127a5b;
       }
-      * { box-sizing: border-box; }
+
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         margin: 0;
+        min-height: 100vh;
         font-family: Inter, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-        background: linear-gradient(180deg, #eef3ff 0%, var(--bg) 40%);
         color: var(--text);
+        background:
+          radial-gradient(circle at 12% 8%, #dbe7ff 0, transparent 36%),
+          radial-gradient(circle at 88% 90%, #d8e8ff 0, transparent 33%),
+          var(--bg);
       }
-      .wrap {
-        max-width: 900px;
-        margin: 64px auto;
-        padding: 0 16px;
+
+      .app-shell {
+        width: min(1140px, calc(100% - 32px));
+        margin: 28px auto;
+        min-height: calc(100vh - 56px);
+        border-radius: 22px;
+        overflow: hidden;
+        border: 1px solid #cfdaf2;
+        box-shadow: 0 16px 42px rgba(13, 42, 122, 0.15);
+        background: var(--surface);
+        display: grid;
+        grid-template-columns: 0.95fr 1.35fr;
       }
-      .card {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 28px;
-        box-shadow: 0 8px 30px rgba(15, 98, 254, 0.08);
+
+      .crm-panel {
+        background: linear-gradient(180deg, var(--panel) 0%, #142a61 60%, #10224f 100%);
+        color: #f5f8ff;
+        padding: 34px 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 26px;
       }
-      h1 { margin: 0 0 12px; font-size: 2rem; }
-      p { margin: 0 0 16px; color: var(--muted); line-height: 1.5; }
-      .badge {
-        display: inline-block;
-        background: #e8f0ff;
-        border: 1px solid #c7dbff;
-        color: #123b95;
-        border-radius: 999px;
-        font-size: 12px;
-        padding: 6px 10px;
-        margin-bottom: 12px;
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
       }
-      ul {
+
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .brand h1 {
         margin: 0;
-        padding-left: 20px;
+        font-size: 1rem;
+        letter-spacing: 0.02em;
       }
-      li { margin: 8px 0; }
-      a { color: var(--primary); text-decoration: none; }
-      a:hover { text-decoration: underline; }
-      .footer { margin-top: 20px; font-size: 14px; color: var(--muted); }
+
+      .brand p {
+        margin: 2px 0 0;
+        color: #d2dcff;
+        font-size: 0.82rem;
+      }
+
+      .feature-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 12px;
+      }
+
+      .feature-list li {
+        border: 1px solid rgba(181, 202, 255, 0.32);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 12px;
+      }
+
+      .feature-list strong {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 0.95rem;
+      }
+
+      .feature-list span {
+        font-size: 0.82rem;
+        color: #d5e0ff;
+      }
+
+      .service-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .service-tags span {
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        font-size: 0.75rem;
+      }
+
+      .login-zone {
+        padding: 34px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 18px;
+      }
+
+      .status-pill {
+        width: fit-content;
+        border-radius: 999px;
+        border: 1px solid #b3efdd;
+        color: var(--success);
+        background: #e7fff7;
+        font-size: 0.76rem;
+        font-weight: 600;
+        padding: 6px 10px;
+      }
+
+      .login-box {
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+        background: linear-gradient(180deg, #fff 0%, #fafdff 100%);
+      }
+
+      .login-box h2 {
+        margin: 0;
+        font-size: 1.55rem;
+      }
+
+      .login-box p {
+        margin: 8px 0 0;
+        color: var(--muted);
+      }
+
+      .field {
+        margin-top: 16px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 7px;
+        font-size: 0.84rem;
+        font-weight: 600;
+      }
+
+      input,
+      select {
+        width: 100%;
+        border: 1px solid #c7d4ea;
+        border-radius: 10px;
+        padding: 11px 12px;
+        font: inherit;
+        background: #fff;
+      }
+
+      .split {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .options {
+        margin-top: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.82rem;
+      }
+
+      .options a {
+        color: var(--primary);
+        text-decoration: none;
+      }
+
+      .options a:hover {
+        text-decoration: underline;
+      }
+
+      .btn-primary {
+        margin-top: 16px;
+        width: 100%;
+        border: none;
+        border-radius: 10px;
+        padding: 12px;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.92rem;
+        background: linear-gradient(180deg, var(--primary) 0%, var(--primary-strong) 100%);
+        cursor: pointer;
+      }
+
+      .mini-grid {
+        margin-top: 4px;
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .mini-card {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px;
+      }
+
+      .mini-card strong {
+        display: block;
+        font-size: 0.86rem;
+      }
+
+      .mini-card span {
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+
+      @media (max-width: 900px) {
+        .app-shell {
+          grid-template-columns: 1fr;
+        }
+
+        .crm-panel,
+        .login-zone {
+          padding: 24px;
+        }
+
+        .split,
+        .mini-grid {
+          grid-template-columns: 1fr;
+        }
+      }
     </style>
   </head>
   <body>
-    <main class="wrap">
-      <section class="card">
-        <span class="badge">Deployment Ready</span>
-        <h1>Holiday Itinerary / Non-Air Travel Portal</h1>
-        <p>
-          This repository is now configured with a root web page so Vercel can serve
-          a valid response at <strong>/</strong> instead of returning a 404.
-        </p>
-        <p>
-          Implementation guidance and planning docs are available below:
-        </p>
-        <ul>
-          <li><a href="./README.md">README.md</a></li>
-          <li><a href="./README_FOR_CODEX.md">README_FOR_CODEX.md</a></li>
-          <li><a href="./PROJECT_SCOPE.md">PROJECT_SCOPE.md</a></li>
-          <li><a href="./ARCHITECTURE.md">ARCHITECTURE.md</a></li>
-          <li><a href="./IMPLEMENTATION_PLAN.md">IMPLEMENTATION_PLAN.md</a></li>
+    <main class="app-shell">
+      <section class="crm-panel" aria-label="Portal structure">
+        <header class="brand">
+          <div class="brand-mark">SG</div>
+          <div>
+            <h1>Satguru Travel CRM</h1>
+            <p>Holiday Itinerary • Non-Air Services</p>
+          </div>
+        </header>
+
+        <ul class="feature-list">
+          <li>
+            <strong>Query Operations</strong>
+            <span>Self, Inter-Branch Sent & Received with SLA escalation and reassignment audit trail.</span>
+          </li>
+          <li>
+            <strong>Quote & Booking Engine</strong>
+            <span>Separate quote lifecycle and booking conversion with approval controls.</span>
+          </li>
+          <li>
+            <strong>Admin & Dynamic Masters</strong>
+            <span>Routing-critical branches, user mapping, and configurable master framework.</span>
+          </li>
         </ul>
-        <p class="footer">
-          Note: Air ticketing is out of scope. This platform is for Non-Air tourism workflows only.
-        </p>
+
+        <div class="service-tags" aria-label="Supported services">
+          <span>Hotel</span>
+          <span>Packages</span>
+          <span>Visa</span>
+          <span>Car Rental</span>
+          <span>Cruise</span>
+          <span>Insurance</span>
+          <span>MICE</span>
+          <span>Train</span>
+          <span>Sightseeing</span>
+        </div>
+      </section>
+
+      <section class="login-zone" aria-label="Login panel">
+        <span class="status-pill">Portal Login</span>
+
+        <div class="login-box">
+          <h2>Sign in to continue</h2>
+          <p>Use your branch credentials to access operational, quotation, and booking modules.</p>
+
+          <form>
+            <div class="split">
+              <div class="field">
+                <label for="branch">Branch</label>
+                <select id="branch" name="branch">
+                  <option>Dubai Head Office</option>
+                  <option>Abu Dhabi</option>
+                  <option>Muscat</option>
+                  <option>Doha</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="service">Primary Service</label>
+                <select id="service" name="service">
+                  <option>Packages</option>
+                  <option>Hotel</option>
+                  <option>Visa</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="user">Email / Username</label>
+              <input id="user" name="user" type="text" placeholder="e.g. ops.dubai@satgurutravel.com" />
+            </div>
+
+            <div class="field">
+              <label for="password">Password</label>
+              <input id="password" name="password" type="password" placeholder="Enter password" />
+            </div>
+
+            <div class="options">
+              <label><input type="checkbox" /> Remember me</label>
+              <a href="#">Forgot password?</a>
+            </div>
+
+            <button type="button" class="btn-primary">Login to Dashboard</button>
+          </form>
+        </div>
+
+        <div class="mini-grid" aria-label="Module shortcuts">
+          <article class="mini-card">
+            <strong>Admin</strong>
+            <span>Master, Users, Activity</span>
+          </article>
+          <article class="mini-card">
+            <strong>Query Desk</strong>
+            <span>Track TAT and escalations</span>
+          </article>
+          <article class="mini-card">
+            <strong>Finance</strong>
+            <span>Invoices and refunds</span>
+          </article>
+        </div>
       </section>
     </main>
   </body>

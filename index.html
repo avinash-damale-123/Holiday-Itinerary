@@ -3,605 +3,342 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcome to Non-air Desk</title>
+    <title>Holiday Itinerary Portal</title>
     <style>
       :root {
-        --bg: #ecf2ff;
-        --card: rgba(255, 255, 255, 0.86);
-        --text: #11213f;
-        --muted: #5c6c8c;
-        --primary: #1a5cff;
-        --primary-dark: #0d47cc;
-        --primary-soft: #e8efff;
-        --border: #cddaf6;
-        --danger: #bb2f2f;
-        --shadow-soft: 0 10px 30px rgba(13, 36, 88, 0.1);
-        --shadow-strong: 0 18px 48px rgba(13, 36, 88, 0.16);
+        --bg: #f3f6ff;
+        --card: #ffffff;
+        --text: #0f172a;
+        --muted: #667085;
+        --line: #d9e2f5;
+        --brand: #1d4ed8;
+        --brand-dark: #143a9f;
+        --ok: #047857;
+        --warn: #b45309;
+        --danger: #b91c1c;
+        --shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
       }
 
-      * {
-        box-sizing: border-box;
-      }
-
+      * { box-sizing: border-box; }
       body {
         margin: 0;
-        font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+        font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+        background: radial-gradient(circle at top right, #deebff, transparent 34%), var(--bg);
         color: var(--text);
-        background:
-          radial-gradient(circle at 8% 10%, #dae7ff 0, transparent 38%),
-          radial-gradient(circle at 92% 88%, #d4e4ff 0, transparent 36%),
-          linear-gradient(145deg, #f7faff 0%, #edf3ff 38%, #e5eefd 100%),
-          var(--bg);
+      }
+
+      .app-shell {
+        display: grid;
+        grid-template-columns: 260px 1fr;
         min-height: 100vh;
       }
-      .wrap { max-width: 1260px; margin: 22px auto; padding: 0 16px; }
-      .card {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        box-shadow: var(--shadow-soft);
-        backdrop-filter: blur(6px);
-      }
-      .login-card { max-width: 460px; margin: 10vh auto 0; padding: 30px; }
-      h1 { margin: 0 0 6px; font-size: 1.9rem; }
-      h2 { margin: 0; font-size: 1.5rem; letter-spacing: -0.02em; }
-      p { color: var(--muted); margin: 0 0 16px; }
-      .field { margin: 14px 0; }
-      label { display: block; margin-bottom: 6px; font-size: 0.9rem; font-weight: 700; }
-      input[type="text"], input[type="password"] {
-        width: 100%;
-        border: 1px solid #bfd0ef;
-        border-radius: 12px;
-        padding: 11px 12px;
-        font: inherit;
-        background: #fff;
-      }
-      .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 0.86rem; }
-      .row a { color: var(--primary); text-decoration: none; }
-      .row a:hover { text-decoration: underline; }
-      button {
-        width: 100%;
-        margin-top: 14px;
-        border: 0;
-        border-radius: 12px;
-        padding: 12px;
-        font-weight: 700;
-        color: #fff;
-        background: linear-gradient(180deg, #3a7bff 0%, var(--primary-dark) 100%);
-        cursor: pointer;
-        transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
-        box-shadow: 0 8px 18px rgba(26, 92, 255, 0.34);
-      }
-      button:hover {
-        transform: translateY(-1px);
-        filter: brightness(1.02);
-      }
-      button:active {
-        transform: translateY(0);
-      }
-      .hint {
-        margin-top: 12px;
-        font-size: 0.78rem;
-        color: var(--muted);
-        background: #f8fbff;
-        border: 1px dashed #c7d6f2;
-        border-radius: 10px;
-        padding: 10px;
-      }
-      .error { color: var(--danger); font-size: 0.86rem; min-height: 20px; margin-top: 8px; }
 
-      .app { display: none; }
+      .sidebar {
+        background: #0b1736;
+        color: #e7eeff;
+        padding: 20px 14px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow: auto;
+      }
+
+      .brand h1 { margin: 0; font-size: 1.25rem; }
+      .brand p { margin: 6px 0 18px; color: #b7c4e8; font-size: 0.82rem; }
+
+      .nav-btn {
+        width: 100%;
+        margin: 0 0 8px;
+        border: 1px solid #22345f;
+        background: #0f2148;
+        color: inherit;
+        border-radius: 12px;
+        padding: 10px 12px;
+        text-align: left;
+        font-size: 0.92rem;
+        cursor: pointer;
+      }
+      .nav-btn.active { background: linear-gradient(180deg, #2f6fff 0%, #1d4ed8 100%); border-color: #4a80ff; }
+
+      .main { padding: 18px; }
       .topbar {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        padding: 14px 16px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 12px;
-        padding: 18px 20px;
-        margin-bottom: 14px;
       }
-      .pill {
-        padding: 8px 12px;
+      .topbar h2 { margin: 0; font-size: 1.2rem; }
+      .topbar p { margin: 4px 0 0; color: var(--muted); font-size: 0.85rem; }
+      .chip {
+        border: 1px solid #c8d8ff;
+        background: #ecf2ff;
+        color: var(--brand-dark);
         border-radius: 999px;
+        padding: 7px 12px;
+        font-size: 0.8rem;
+      }
+
+      .page { display: none; margin-top: 16px; }
+      .page.active { display: block; }
+
+      .grid { display: grid; gap: 12px; }
+      .kpi-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+      .split-3 { grid-template-columns: 2fr 1fr; }
+      .split-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        padding: 14px;
+      }
+      .card h3 { margin: 0 0 8px; font-size: 1.05rem; }
+      .sub { color: var(--muted); margin: 0 0 12px; font-size: 0.88rem; }
+
+      .kpi .label { color: var(--muted); font-size: 0.84rem; }
+      .kpi .value { margin-top: 6px; font-size: 1.7rem; font-weight: 700; }
+
+      table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+      th, td { border: 1px solid var(--line); padding: 8px; text-align: left; }
+      th { background: #f8faff; }
+
+      .badge {
+        border-radius: 999px;
+        padding: 3px 8px;
         font-size: 0.75rem;
-        background: var(--primary-soft);
-        color: var(--primary-dark);
-        border: 1px solid #cbd9ff;
+        display: inline-block;
+        font-weight: 600;
       }
-      .layout { display: grid; grid-template-columns: 280px 1fr; gap: 14px; align-items: start; }
-      .side { padding: 16px; position: sticky; top: 16px; }
-      .side button { margin: 8px 0 0; text-align: left; border-radius: 14px; }
-      .side button.active { background: linear-gradient(180deg, #1b64f8 0%, #0f4fd0 100%); }
-      .content { padding: 18px; min-height: 600px; }
-      .panel { display: none; }
-      .panel.active { display: block; }
-      .grid { display: grid; gap: 10px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .mini { border: 1px solid var(--border); border-radius: 14px; padding: 10px; background: #fcfdff; }
-      table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.88rem; }
-      th, td { border: 1px solid var(--border); padding: 8px; text-align: left; vertical-align: top; }
-      th { background: linear-gradient(180deg, #f8faff 0%, #edf3ff 100%); position: sticky; top: 0; z-index: 1; }
-      .master-subtabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
-      .master-subtab-btn { width: auto; margin-top: 0; padding: 8px 12px; }
-      .master-subtab-btn.active { background: linear-gradient(180deg, #1b64f8 0%, #0f4fd0 100%); }
-      .master-table-card { border: 1px solid var(--border); border-radius: 16px; padding: 14px; background: #fcfdff; box-shadow: inset 0 1px 0 #fff; }
-      .master-head-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
-      .master-head-row button { width: auto; margin: 0; padding: 8px 12px; }
-      .table-wrap { overflow: auto; max-height: 430px; }
-      .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(13, 28, 53, 0.55); padding: 20px; z-index: 60; }
-      .modal-backdrop.open { display: block; }
-      .modal-card { background: #fff; border-radius: 18px; border: 1px solid var(--border); max-width: 1100px; width: 100%; margin: 0 auto; max-height: calc(100vh - 40px); overflow: auto; padding: 18px; box-shadow: var(--shadow-strong); }
-      .modal-header { display: flex; justify-content: space-between; align-items: start; gap: 10px; }
-      .modal-header button { width: auto; margin: 0; padding: 8px 12px; }
-      .master-actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
-      .master-actions button { width: auto; margin-top: 0; padding: 8px 10px; font-size: 0.82rem; }
-      .table-wrap input, .table-wrap select { width: 100%; border: 1px solid #bfd0ef; border-radius: 6px; padding: 5px 6px; font: inherit; font-size: 0.82rem; }
-      .inline { display: flex; gap: 8px; align-items: end; flex-wrap: wrap; }
-      .inline .field { margin: 0; flex: 1; min-width: 160px; }
-      .muted { color: var(--muted); font-size: 0.82rem; }
+      .s-ok { background: #dcfce7; color: var(--ok); }
+      .s-warn { background: #fef3c7; color: var(--warn); }
+      .s-danger { background: #fee2e2; color: var(--danger); }
+      .s-brand { background: #dbeafe; color: #1e40af; }
 
+      .quick-btn {
+        border: 1px solid var(--line);
+        background: #f8fbff;
+        border-radius: 12px;
+        padding: 12px;
+        font-weight: 600;
+      }
+
+      .setting-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+      .setting-tab { width: auto; border: 1px solid var(--line); background: #f8fbff; border-radius: 999px; padding: 7px 12px; cursor: pointer; }
+      .setting-tab.active { background: var(--brand); color: white; border-color: var(--brand); }
+      .setting-panel { display: none; }
+      .setting-panel.active { display: block; }
+
+      @media (max-width: 1100px) {
+        .kpi-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      }
       @media (max-width: 900px) {
-        .layout { grid-template-columns: 1fr; }
-        .login-card { margin-top: 6vh; }
-        .grid { grid-template-columns: 1fr; }
-        .master-subtabs { flex-direction: column; }
-        .side { position: static; }
-        .topbar { flex-direction: column; align-items: flex-start; }
-        .topbar > div:last-child { width: 100%; display: flex; justify-content: space-between; align-items: center; }
-        .content { padding: 14px; min-height: auto; }
+        .app-shell { grid-template-columns: 1fr; }
+        .sidebar { position: static; height: auto; }
+        .split-3, .split-2 { grid-template-columns: 1fr; }
       }
-
-      @media (max-width: 560px) {
-        .wrap { margin: 10px auto; padding: 0 10px; }
-        .card { border-radius: 14px; }
-        .login-card { padding: 18px; margin-top: 4vh; }
-        .side, .content { padding: 12px; }
-        h1 { font-size: 1.6rem; }
-        h2 { font-size: 1.25rem; }
-        table { font-size: 0.82rem; }
-        th, td { padding: 6px; }
+      @media (max-width: 640px) {
+        .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       }
     </style>
   </head>
   <body>
-    <main class="wrap">
-      <section id="loginScreen" class="card login-card">
-        <h1>Welcome to Non-air Desk</h1>
-        <p>Sign in with your username and password.</p>
-
-        <form id="loginForm">
-          <div class="field">
-            <label for="username">User Name</label>
-            <input id="username" name="username" type="text" placeholder="Enter username" required />
-          </div>
-
-          <div class="field">
-            <label for="password">Password</label>
-            <input id="password" name="password" type="password" placeholder="Enter password" required />
-          </div>
-
-          <div class="row">
-            <label><input id="rememberMe" type="checkbox" /> Remember me</label>
-            <a href="#" aria-label="Forgot Password">Forgot password?</a>
-          </div>
-
-          <div id="loginError" class="error" role="alert"></div>
-          <button type="submit">Login</button>
-        </form>
-
-        <div class="hint">
-          Demo credentials: <strong>superadmin / Super@123</strong>, <strong>admin / Admin@123</strong>, <strong>user / User@123</strong>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <h1>Holiday Itinerary</h1>
+          <p>Top Class Travel Portal</p>
         </div>
-      </section>
+        <button class="nav-btn active" data-page="home">Home</button>
+        <button class="nav-btn" data-page="quotation">Quotation</button>
+        <button class="nav-btn" data-page="query">Query Desk</button>
+        <button class="nav-btn" data-page="booking">Booking</button>
+        <button class="nav-btn" data-page="client">Client</button>
+        <button class="nav-btn" data-page="dashboard">Dashboard</button>
+        <button class="nav-btn" data-page="reports">Reports</button>
+        <button class="nav-btn" data-page="settings">Settings</button>
+      </aside>
 
-      <section id="appScreen" class="app">
-        <header class="card topbar">
+      <main class="main">
+        <header class="topbar">
           <div>
-            <h2>Non-air Desk Admin Panel</h2>
-            <p id="loginInfo"></p>
+            <h2 id="pageTitle">Home</h2>
+            <p id="pageSubtitle">Travel operations platform for quotation, query, booking, reports, and administration.</p>
           </div>
-          <div>
-            <span id="roleBadge" class="pill"></span>
-            <button id="logoutBtn" type="button" style="width:auto;padding:8px 12px;margin-left:8px;">Logout</button>
-          </div>
+          <span class="chip">Super Admin</span>
         </header>
 
-        <div class="layout">
-          <aside class="card side">
-            <h2>Admin</h2>
-            <button class="tabBtn active" data-tab="master">Master</button>
-            <button class="tabBtn" data-tab="user-management">User Management</button>
-            <button class="tabBtn" data-tab="activity">Activity Tracking</button>
-            <button class="tabBtn" data-tab="user-circle">User Circle</button>
-          </aside>
-
-          <section class="card content">
-            <article id="master" class="panel active">
-              <h2>Master (default first tab)</h2>
-              <p>Use the master sub-tabs to open pre-defined masters. Main area keeps table-only view.</p>
-
-              <div id="masterSubTabs" class="master-subtabs"></div>
-
-              <section class="master-table-card">
-                <div class="master-head-row">
-                  <div>
-                    <h3 id="masterTableTitle" style="margin:0;"></h3>
-                    <p id="masterTableDescription" class="muted" style="margin:4px 0 0;"></p>
-                  </div>
-                  <button id="editMasterBtn" type="button">Edit Master</button>
-                </div>
-                <div class="table-wrap">
-                  <table>
-                    <thead id="masterTableHead"></thead>
-                    <tbody id="masterTableBody"></tbody>
-                  </table>
-                </div>
-              </section>
-            </article>
-
-            <article id="user-management" class="panel">
-              <h2>User Management</h2>
-              <p>User setup controls routing, fallback assignment, and SLA escalation.</p>
-              <table>
-                <thead><tr><th>Section</th><th>Mandatory fields</th></tr></thead>
-                <tbody>
-                  <tr><td>Identity</td><td>Full Name, Email/Login ID, Password, User Type</td></tr>
-                  <tr><td>Location</td><td>Country, Branch (filtered by country), Extra Branches</td></tr>
-                  <tr><td>Routing</td><td>1st User fallback, Service handled (at least one)</td></tr>
-                  <tr><td>Hierarchy</td><td>Escalation matrix L1-L4 (L1 self; L2-L4 mandatory)</td></tr>
-                  <tr><td>Availability</td><td>Shift timing and time zone</td></tr>
-                  <tr><td>Permissions</td><td>Module-level permissions (Master/Branch Master reserved to Super Admin)</td></tr>
-                </tbody>
-              </table>
-            </article>
-
-            <article id="activity" class="panel">
-              <h2>Activity Tracking</h2>
-              <p>Audit trail for creation/modification logs, assignment updates, escalation events, and last login review.</p>
-              <ul>
-                <li>Track query create/update/reassignment timestamps.</li>
-                <li>Track role/permission changes and user activation/inactivation.</li>
-                <li>Track escalation transitions (L1 → L2 → L3 → L4).</li>
-              </ul>
-            </article>
-
-            <article id="user-circle" class="panel">
-              <h2>User Circle</h2>
-              <p>Reserved for future phase (feature flagged placeholder).</p>
-            </article>
-          </section>
-        </div>
-      </section>
-
-      <div id="masterModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalMasterTitle">
-        <section class="modal-card">
-          <div class="modal-header">
-            <div>
-              <h3 id="modalMasterTitle" style="margin:0;"></h3>
-              <p id="modalMasterDescription" class="muted" style="margin:4px 0 0;"></p>
-            </div>
-            <button id="closeMasterModalBtn" type="button">Close</button>
+        <section class="page active" id="home">
+          <div class="grid kpi-grid">
+            <div class="card kpi"><div class="label">Open Self Queries</div><div class="value">42</div></div>
+            <div class="card kpi"><div class="label">Inter-Branch Sent</div><div class="value">18</div></div>
+            <div class="card kpi"><div class="label">Pending Bookings</div><div class="value">11</div></div>
+            <div class="card kpi"><div class="label">Confirmed Bookings</div><div class="value">24</div></div>
+            <div class="card kpi"><div class="label">Active Clients</div><div class="value">386</div></div>
+            <div class="card kpi"><div class="label">Urgent Queries</div><div class="value">7</div></div>
           </div>
-
-          <div class="inline" style="margin-top:10px;">
-            <div class="field">
-              <label for="modalMasterName">Master Name</label>
-              <input id="modalMasterName" type="text" />
+          <div class="grid split-3" style="margin-top:12px;">
+            <div class="card">
+              <h3>Quick Actions</h3>
+              <p class="sub">Launch key operations quickly.</p>
+              <div class="grid split-2">
+                <button class="quick-btn">Create Query</button>
+                <button class="quick-btn">Create Quotation</button>
+                <button class="quick-btn">View Bookings</button>
+                <button class="quick-btn">View Clients</button>
+              </div>
             </div>
-            <div class="field" style="flex:2;">
-              <label for="modalMasterDescriptionInput">Master Description</label>
-              <input id="modalMasterDescriptionInput" type="text" />
-            </div>
-            <div class="field">
-              <label for="modalMasterStatus">Status</label>
-              <select id="modalMasterStatus">
-                <option>Active</option>
-                <option>Inactive</option>
-              </select>
+            <div class="card">
+              <h3>Alerts</h3>
+              <p class="sub">Items requiring immediate action.</p>
+              <p>• 7 urgent queries need attention</p>
+              <p>• 3 pending registration approvals</p>
+              <p>• 2 bookings waiting for payment confirmation</p>
             </div>
           </div>
+        </section>
 
-          <div class="master-actions">
-            <button type="button" id="modalAddRowBtn">Add Row</button>
-            <button type="button" id="modalSortAscBtn">Sort A-Z</button>
-            <button type="button" id="modalSortDescBtn">Sort Z-A</button>
-            <input id="modalSearch" type="text" placeholder="Search rows" style="max-width:220px;" />
-          </div>
-
-          <div class="table-wrap">
+        <section class="page" id="quotation">
+          <div class="card">
+            <h3>Create Quotation</h3>
+            <p class="sub">Build quotations with smart pricing, export, and communication.</p>
             <table>
-              <thead id="modalTableHead"></thead>
-              <tbody id="modalTableBody"></tbody>
+              <tr><th>Field</th><th>Value</th><th>Field</th><th>Value</th></tr>
+              <tr><td>Client</td><td>ABC Corporate Ltd</td><td>Destination</td><td>Dubai</td></tr>
+              <tr><td>Service</td><td>Packages</td><td>Currency</td><td>USD</td></tr>
+              <tr><td>ROE</td><td>129.50</td><td>Status</td><td><span class="badge s-brand">Draft</span></td></tr>
             </table>
           </div>
         </section>
-      </div>
 
-    </main>
+        <section class="page" id="query">
+          <div class="card">
+            <h3>Query Listing</h3>
+            <p class="sub">Self queries and inter-branch collaboration.</p>
+            <table>
+              <thead><tr><th>ID</th><th>Title</th><th>Type</th><th>Service</th><th>Priority</th><th>Status</th><th>Branch</th><th>Age</th></tr></thead>
+              <tbody>
+                <tr><td>QRY-10021</td><td>Kenya family package</td><td>Self</td><td>Packages</td><td><span class="badge s-danger">High</span></td><td><span class="badge s-ok">Quoted</span></td><td>Nairobi</td><td>6h</td></tr>
+                <tr><td>QRY-10022</td><td>Dubai visa support</td><td>Inter-Branch Sent</td><td>Visa</td><td><span class="badge s-warn">Medium</span></td><td><span class="badge s-warn">Waiting Branch</span></td><td>Pune</td><td>11h</td></tr>
+                <tr><td>QRY-10023</td><td>MICE rate request</td><td>Inter-Branch Received</td><td>MICE</td><td><span class="badge s-danger">High</span></td><td><span class="badge s-brand">In Progress</span></td><td>Central</td><td>2h</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="page" id="booking">
+          <div class="card">
+            <h3>Booking Register</h3>
+            <table>
+              <thead><tr><th>ID</th><th>Client</th><th>Service</th><th>Amount</th><th>Status</th><th>Payment</th></tr></thead>
+              <tbody>
+                <tr><td>BK-4021</td><td>ABC Corporate Ltd</td><td>Hotel + Transfers</td><td>KES 245,000</td><td><span class="badge s-brand">In Fulfillment</span></td><td>Received</td></tr>
+                <tr><td>BK-4022</td><td>Global Agency</td><td>Visa</td><td>USD 1,250</td><td><span class="badge s-warn">Pending Payment</span></td><td>Pending</td></tr>
+                <tr><td>BK-4023</td><td>Retail Walk-in</td><td>Packages</td><td>EUR 3,890</td><td><span class="badge s-ok">Confirmed</span></td><td>Received</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="page" id="client">
+          <div class="card">
+            <h3>Client Master</h3>
+            <table>
+              <thead><tr><th>ID</th><th>Name</th><th>Type</th><th>Branch</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>CLI-000121</td><td>ABC Corporate Ltd</td><td>Corporate</td><td>Nairobi</td><td><span class="badge s-ok">Active</span></td></tr>
+                <tr><td>CLI-000122</td><td>Skyline Agency</td><td>B2B</td><td>Nairobi</td><td><span class="badge s-ok">Active</span></td></tr>
+                <tr><td>CLI-000123</td><td>John Mwangi</td><td>B2C</td><td>Nairobi</td><td><span class="badge s-warn">Inactive</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="page" id="dashboard">
+          <div class="grid kpi-grid">
+            <div class="card kpi"><div class="label">Total Queries</div><div class="value">121</div></div>
+            <div class="card kpi"><div class="label">Sent Quotations</div><div class="value">66</div></div>
+            <div class="card kpi"><div class="label">Total Bookings</div><div class="value">52</div></div>
+            <div class="card kpi"><div class="label">Active Clients</div><div class="value">386</div></div>
+            <div class="card kpi"><div class="label">Overdue Queries</div><div class="value">9</div></div>
+            <div class="card kpi"><div class="label">Total Sales</div><div class="value">KES 8.4M</div></div>
+          </div>
+        </section>
+
+        <section class="page" id="reports">
+          <div class="card">
+            <h3>Query Report</h3>
+            <p class="sub">Consolidated report for exports and review.</p>
+            <table>
+              <thead><tr><th>Query ID</th><th>Title</th><th>Branch</th><th>Service</th><th>Status</th><th>SLA</th></tr></thead>
+              <tbody>
+                <tr><td>QRY-10021</td><td>Kenya family package</td><td>Nairobi</td><td>Packages</td><td>Quoted</td><td>Within SLA</td></tr>
+                <tr><td>QRY-10022</td><td>Dubai visa support</td><td>Pune</td><td>Visa</td><td>Waiting Branch</td><td>Within SLA</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="page" id="settings">
+          <div class="card">
+            <h3>Settings</h3>
+            <p class="sub">Administrative sub-sections for global configuration.</p>
+            <div class="setting-tabs">
+              <button class="setting-tab active" data-setting="masters">Masters</button>
+              <button class="setting-tab" data-setting="users">User Management</button>
+              <button class="setting-tab" data-setting="roles">Roles & Permissions</button>
+              <button class="setting-tab" data-setting="sla">SLA</button>
+            </div>
+            <div class="setting-panel active" id="masters"><p>Locked Masters: Type of Services, Countries, Branch Master, Service-wise TAT.</p></div>
+            <div class="setting-panel" id="users"><p>User table includes roles, branch mapping, and service assignments.</p></div>
+            <div class="setting-panel" id="roles"><p>Super Admin = full control; Admin = limited administration; Standard User = operations only.</p></div>
+            <div class="setting-panel" id="sla"><p>L1 base TAT, L2 = 2x, L3 = 4x, L4 = 8x with business-hour awareness.</p></div>
+          </div>
+        </section>
+      </main>
+    </div>
 
     <script>
-      const CREDENTIALS = {
-        superadmin: { password: "Super@123", role: "Super Admin" },
-        admin: { password: "Admin@123", role: "Admin" },
-        user: { password: "User@123", role: "Standard User" }
+      const pageMeta = {
+        home: ["Home", "Clean landing page with quick actions and operational visibility."],
+        quotation: ["Quotation", "Build customized quotations with conversion, markup, and export."],
+        query: ["Query Desk", "Engine for self queries, inter-branch collaboration, and SLA monitoring."],
+        booking: ["Booking", "Confirmed business with status and payment tracking."],
+        client: ["Client", "Reusable client master for quotation, query, and booking modules."],
+        dashboard: ["Dashboard", "Real-time control panel for operations and performance trends."],
+        reports: ["Reports", "Detailed reporting with export-friendly tabular data."],
+        settings: ["Settings", "Administrative controls for masters, users, roles, and SLA."],
       };
 
-      const loginForm = document.getElementById("loginForm");
-      const loginError = document.getElementById("loginError");
-      const loginScreen = document.getElementById("loginScreen");
-      const appScreen = document.getElementById("appScreen");
-      const roleBadge = document.getElementById("roleBadge");
-      const loginInfo = document.getElementById("loginInfo");
-      const logoutBtn = document.getElementById("logoutBtn");
-      const tabButtons = document.querySelectorAll(".tabBtn");
-      const panels = document.querySelectorAll(".panel");
+      const navButtons = document.querySelectorAll(".nav-btn");
+      const pages = document.querySelectorAll(".page");
+      const pageTitle = document.getElementById("pageTitle");
+      const pageSubtitle = document.getElementById("pageSubtitle");
 
-      const masterState = {
-        masters: [
-          {
-            id: "service-master",
-            name: "Service Master",
-            description: "Type of services used across dropdowns and routing.",
-            status: "Active",
-            locked: true,
-            columns: ["Master Item / Option", "Description", "Status"],
-            rows: [
-              ["Car Rental", "--", "Active"], ["Cruise", "--", "Active"], ["Hotel", "--", "Active"],
-              ["Insurance", "--", "Active"], ["MICE", "--", "Active"], ["Packages", "--", "Active"],
-              ["Sight Seeing", "--", "Active"], ["Train", "--", "Active"], ["Visa", "--", "Active"], ["Other", "--", "Active"]
-            ]
-          },
-          {
-            id: "country-master",
-            name: "Country Master",
-            description: "Standardized countries with ISO and dialing code.",
-            status: "Active",
-            locked: true,
-            columns: ["Country Name", "ISO-2", "ISO-3", "Dialing Code", "Status"],
-            rows: [
-              ["Afghanistan", "AF", "AFG", "93", "Active"], ["Albania", "AL", "ALB", "355", "Active"],
-              ["Algeria", "DZ", "DZA", "213", "Active"], ["Andorra", "AD", "AND", "376", "Active"],
-              ["Angola", "AO", "AGO", "244", "Active"], ["Argentina", "AR", "ARG", "54", "Active"],
-              ["Australia", "AU", "AUS", "61", "Active"], ["Austria", "AT", "AUT", "43", "Active"],
-              ["Belgium", "BE", "BEL", "32", "Active"], ["Belize", "BZ", "BLZ", "501", "Active"]
-            ]
-          },
-          {
-            id: "branch-master",
-            name: "Branch Master",
-            description: "Routing-critical branch definitions.",
-            status: "Active",
-            locked: true,
-            columns: ["Branch ID", "Country", "Branch Code", "Branch Name", "Status"],
-            rows: [
-              ["B0001", "Nigeria", "ABV", "STTS - Abuja", "Active"], ["B0002", "Ethiopia", "ADD", "STTS - Addis Ababa", "Active"],
-              ["B0008", "Belgium", "BRU", "STTS - Brussels", "Active"], ["B0010", "Egypt", "CAI", "STTS - Cairo", "Active"],
-              ["B0012", "South Africa", "CPT", "STTS - Cape Town", "Active"], ["B0018", "Uganda", "EBB", "STTS - Entebbe", "Active"],
-              ["B0019", "India", "EUC", "STTS - Europcar India", "Active"], ["B0020", "Cameroon", "GOU", "STTS - Garoua", "Active"]
-            ]
-          }
-        ],
-        selectedId: "service-master"
-      };
-
-      const masterSubTabs = document.getElementById("masterSubTabs");
-      const masterTableTitle = document.getElementById("masterTableTitle");
-      const masterTableDescription = document.getElementById("masterTableDescription");
-      const masterTableHead = document.getElementById("masterTableHead");
-      const masterTableBody = document.getElementById("masterTableBody");
-      const masterModal = document.getElementById("masterModal");
-
-      function switchTab(tabId) {
-        tabButtons.forEach((btn) => btn.classList.toggle("active", btn.dataset.tab === tabId));
-        panels.forEach((panel) => panel.classList.toggle("active", panel.id === tabId));
+      function activatePage(pageId) {
+        navButtons.forEach((button) => button.classList.toggle("active", button.dataset.page === pageId));
+        pages.forEach((page) => page.classList.toggle("active", page.id === pageId));
+        pageTitle.textContent = pageMeta[pageId][0];
+        pageSubtitle.textContent = pageMeta[pageId][1];
       }
 
-      tabButtons.forEach((btn) => {
-        btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+      navButtons.forEach((button) => {
+        button.addEventListener("click", () => activatePage(button.dataset.page));
       });
 
-      function findMasterById(id) {
-        return masterState.masters.find((master) => master.id === id);
-      }
-
-      function renderMasterSubTabs() {
-        masterSubTabs.innerHTML = "";
-        masterState.masters.forEach((master) => {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "master-subtab-btn" + (master.id === masterState.selectedId ? " active" : "");
-          btn.textContent = master.name;
-          btn.addEventListener("click", () => {
-            masterState.selectedId = master.id;
-            renderMasterSubTabs();
-            renderMasterTable();
-          });
-          masterSubTabs.appendChild(btn);
+      const settingTabs = document.querySelectorAll(".setting-tab");
+      const settingPanels = document.querySelectorAll(".setting-panel");
+      settingTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          settingTabs.forEach((item) => item.classList.toggle("active", item === tab));
+          settingPanels.forEach((panel) => panel.classList.toggle("active", panel.id === tab.dataset.setting));
         });
-      }
-
-      function renderMasterTable() {
-        const master = findMasterById(masterState.selectedId);
-        if (!master) {
-          return;
-        }
-
-        masterTableTitle.textContent = master.name;
-        masterTableDescription.textContent = `${master.description} (${master.status})`;
-        masterTableHead.innerHTML = `<tr>${master.columns.map((col) => `<th>${col}</th>`).join("")}</tr>`;
-        masterTableBody.innerHTML = master.rows
-          .map((row) => `<tr>${row.map((val) => `<td>${val}</td>`).join("")}</tr>`)
-          .join("");
-      }
-
-      function renderModalRows(filterText = "") {
-        const master = findMasterById(masterState.selectedId);
-        const body = document.getElementById("modalTableBody");
-        body.innerHTML = "";
-
-        master.rows
-          .filter((row) => row.join(" ").toLowerCase().includes(filterText.toLowerCase()))
-          .forEach((row) => {
-            const tr = document.createElement("tr");
-            row.forEach((val, colIndex) => {
-              const td = document.createElement("td");
-              const isStatusCol = master.columns[colIndex]?.toLowerCase() === "status";
-              if (isStatusCol) {
-                const select = document.createElement("select");
-                ["Active", "Inactive"].forEach((option) => {
-                  const op = document.createElement("option");
-                  op.textContent = option;
-                  op.selected = val === option;
-                  select.appendChild(op);
-                });
-                select.addEventListener("change", () => {
-                  row[colIndex] = select.value;
-                  renderMasterTable();
-                });
-                td.appendChild(select);
-              } else {
-                const input = document.createElement("input");
-                input.value = val;
-                input.addEventListener("input", () => {
-                  row[colIndex] = input.value;
-                  renderMasterTable();
-                });
-                td.appendChild(input);
-              }
-              tr.appendChild(td);
-            });
-
-            const action = document.createElement("td");
-            action.innerHTML = '<button type="button" style="width:auto;padding:6px 8px;margin:0;">Delete</button>';
-            action.querySelector("button").addEventListener("click", () => {
-              master.rows = master.rows.filter((item) => item !== row);
-              renderModalRows(document.getElementById("modalSearch").value);
-              renderMasterTable();
-            });
-            tr.appendChild(action);
-            body.appendChild(tr);
-          });
-      }
-
-      function openMasterModal() {
-        const master = findMasterById(masterState.selectedId);
-        document.getElementById("modalMasterTitle").textContent = `${master.name} Management`;
-        document.getElementById("modalMasterDescription").textContent = "Edit full master settings and items.";
-        document.getElementById("modalMasterName").value = master.name;
-        document.getElementById("modalMasterDescriptionInput").value = master.description;
-        document.getElementById("modalMasterStatus").value = master.status;
-        document.getElementById("modalTableHead").innerHTML = `<tr>${master.columns.map((col) => `<th>${col}</th>`).join("")}<th>Action</th></tr>`;
-        document.getElementById("modalSearch").value = "";
-        renderModalRows();
-        masterModal.classList.add("open");
-      }
-
-      function closeMasterModal() {
-        masterModal.classList.remove("open");
-      }
-
-      document.getElementById("editMasterBtn").addEventListener("click", openMasterModal);
-      document.getElementById("closeMasterModalBtn").addEventListener("click", closeMasterModal);
-      masterModal.addEventListener("click", (event) => {
-        if (event.target === masterModal) {
-          closeMasterModal();
-        }
       });
-
-      document.getElementById("modalMasterName").addEventListener("input", (event) => {
-        const master = findMasterById(masterState.selectedId);
-        master.name = event.target.value;
-        renderMasterSubTabs();
-        renderMasterTable();
-      });
-
-      document.getElementById("modalMasterDescriptionInput").addEventListener("input", (event) => {
-        const master = findMasterById(masterState.selectedId);
-        master.description = event.target.value;
-        renderMasterTable();
-      });
-
-      document.getElementById("modalMasterStatus").addEventListener("change", (event) => {
-        const master = findMasterById(masterState.selectedId);
-        master.status = event.target.value;
-        renderMasterTable();
-      });
-
-      document.getElementById("modalAddRowBtn").addEventListener("click", () => {
-        const master = findMasterById(masterState.selectedId);
-        master.rows.push(master.columns.map((col) => (col.toLowerCase() === "status" ? "Active" : "")));
-        renderModalRows(document.getElementById("modalSearch").value);
-        renderMasterTable();
-      });
-
-      document.getElementById("modalSortAscBtn").addEventListener("click", () => {
-        const master = findMasterById(masterState.selectedId);
-        master.rows.sort((a, b) => String(a[0]).localeCompare(String(b[0])));
-        renderModalRows(document.getElementById("modalSearch").value);
-        renderMasterTable();
-      });
-
-      document.getElementById("modalSortDescBtn").addEventListener("click", () => {
-        const master = findMasterById(masterState.selectedId);
-        master.rows.sort((a, b) => String(b[0]).localeCompare(String(a[0])));
-        renderModalRows(document.getElementById("modalSearch").value);
-        renderMasterTable();
-      });
-
-      document.getElementById("modalSearch").addEventListener("input", (event) => {
-        renderModalRows(event.target.value);
-      });
-
-      function showApp(username, role) {
-        loginScreen.style.display = "none";
-        appScreen.style.display = "block";
-        roleBadge.textContent = role;
-        loginInfo.textContent = `Logged in as ${username}`;
-
-        if (role !== "Super Admin") {
-          const masterPanel = document.getElementById("master");
-          masterPanel.insertAdjacentHTML(
-            "afterbegin",
-            `<p style="color:#bb2f2f;font-weight:600;">Read-only note: Master and Branch Master are restricted to Super Admin unless elevated.</p>`
-          );
-        }
-      }
-
-      loginForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        loginError.textContent = "";
-
-        const username = document.getElementById("username").value.trim().toLowerCase();
-        const password = document.getElementById("password").value;
-        const rememberMe = document.getElementById("rememberMe").checked;
-
-        const user = CREDENTIALS[username];
-        if (!user || user.password !== password) {
-          loginError.textContent = "Invalid username or password.";
-          return;
-        }
-
-        if (rememberMe) {
-          localStorage.setItem("nonAirRememberedUser", username);
-        } else {
-          localStorage.removeItem("nonAirRememberedUser");
-        }
-
-        showApp(username, user.role);
-      });
-
-      logoutBtn.addEventListener("click", () => {
-        appScreen.style.display = "none";
-        loginScreen.style.display = "block";
-        loginForm.reset();
-      });
-
-      const rememberedUser = localStorage.getItem("nonAirRememberedUser");
-      if (rememberedUser && CREDENTIALS[rememberedUser]) {
-        document.getElementById("username").value = rememberedUser;
-        document.getElementById("rememberMe").checked = true;
-      }
-
-      renderMasterSubTabs();
-      renderMasterTable();
     </script>
   </body>
 </html>
